@@ -39,4 +39,37 @@ describe('Component ResultBox', () => {
       cleanup();
     }
   });
+  it('should render proper info about conversion when USD -> PLN', () => {
+    const testCases = [
+      { amount: '10', from: 'USD', to: 'PLN' },
+      { amount: '20', from: 'USD', to: 'PLN' },
+      { amount: '25', from: 'USD', to: 'PLN' },
+      { amount: '34', from: 'USD', to: 'PLN' },
+    ];
+
+    for (const testObj of testCases) {
+      //render component
+      render(
+        <ResultBox
+          from={testObj.from}
+          to={testObj.to}
+          amount={parseInt(testObj.amount)}
+        />
+      );
+
+      //find ResultBox div
+      const resultBox = screen.getByTestId('result-box');
+
+      //check ResultBox value
+      const formattedAmount = parseFloat(testObj.amount).toFixed(2);
+      const convertedAmount = (testObj.amount * 3.5).toFixed(2);
+
+      expect(resultBox).toHaveTextContent(
+        '$' + formattedAmount + ' = PLN ' + convertedAmount
+      );
+
+      // unmount component
+      cleanup();
+    }
+  });
 });
